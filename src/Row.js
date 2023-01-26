@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Row.css";
+import axios from "./axios";
 import YouTube from "react-youtube";
 import movieTrailer from "movie-trailer";
 
@@ -11,8 +12,9 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
   useEffect(() => {
     async function fetchData() {
       const request = await axios.get(fetchUrl);
+      // console.log(request)
       setMovies(request.data.results);
-      return request;
+      // return request;
     }
     fetchData();
   }, [fetchUrl]);
@@ -30,15 +32,16 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
       setTrailerUrl("");
     } else {
       movieTrailer(movie?.name || "")
-        .then((url) => {
-          const urlParams = new URLSearchParams(new URL(url).search);
-          setTrailerUrl(urlParams.get("v"));
+      .then((url) => {
+        const urlParams = new URLSearchParams(new URL(url).search);
+        setTrailerUrl(urlParams.get("v"));
+        console.log(url)
         })
         .catch((err) => console.log(err));
     }
   };
 
-  // console.log("URL>>>",trailerUrl)
+  
 
   return (
     <div className="row">
